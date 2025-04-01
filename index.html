@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>petproject041</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2a3990;
+            --secondary-color: #4a6fdd;
+            --accent-color: #f39237;
+            --text-color: #333;
+            --light-color: #f4f7ff;
+            --dark-color: #1a1f36;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem 1rem;
+        }
+        
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        
+        .header-bg .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+        }
+        
+        .circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: -100px;
+            left: 10%;
+        }
+        
+        .circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: -50px;
+            right: 20%;
+        }
+        
+        .circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 30%;
+            right: 10%;
+        }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e27b1e;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .feature-card p {
+            line-height: 1.6;
+        }
+        
+        .info-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .info-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .info-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .info-section ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-block {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .code-block pre {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--secondary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--accent-color);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::after {
+            right: -10px;
+        }
+        
+        .right::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .diagram {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .diagram img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 300px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+                transition: right 0.3s;
+                z-index: 101;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .mobile-menu-close {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--primary-color);
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+            }
+            
+            .right {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="header-content">
+            <h1>WSDLS Approach</h1>
+            <p>A Comprehensive Guide to Web Service Description Language Services</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="logo">WSDLS</div>
+            <button class="mobile-menu-btn">☰</button>
+            <ul class="nav-links">
+                <button class="mobile-menu-close">✕</button>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#implementation">Implementation</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#resources">Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main>
+        <section class="hero">
+            <h1>Web Service Description Language Services</h1>
+            <p>WSDLS Approach is a methodology for describing, discovering, and integrating web services using standardized XML-based languages. It extends WSDL (Web Service Description Language) with advanced service-oriented features to enhance interoperability and functionality in distributed systems.</p>
+            <a href="#implementation" class="btn">Learn How to Implement</a>
+        </section>
+        
+        <section id="overview" class="info-section">
+            <h2>What is WSDLS Approach?</h2>
+            <p>The WSDLS (Web Service Description Language Services) Approach is an extension of the standard WSDL methodology that focuses on enhancing service description, discovery, and integration within modern web architectures. It combines the structural benefits of WSDL with semantic technologies to create more intelligent and dynamic web services.</p>
+            <p>Unlike traditional WSDL, which primarily focuses on syntax and endpoints, WSDLS incorporates service semantics, quality attributes, and advanced orchestration capabilities. This approach bridges the gap between technical implementation and business requirements, enabling more effective service-oriented architectures.</p>
+            <div class="diagram">
+                <img src="WSDLS.png" alt="WSDLS Architecture Diagram">
+            </div>
+        </section>
+        
+        <section id="features" class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Enhanced Service Description</h3>
+                <p>WSDLS extends standard WSDL with rich semantic annotations that describe not just the interface but also the behavior, preconditions, effects, and quality attributes of web services.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Intelligent Discovery</h3>
+                <p>Leverages semantic matching algorithms to enable more accurate service discovery based on functional requirements, quality parameters, and contextual constraints.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Dynamic Composition</h3>
+                <p>Supports runtime service composition through advanced orchestration and choreography mechanisms, allowing systems to adapt to changing requirements and conditions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Security Integration</h3>
+                <p>Incorporates security policies and requirements directly into service descriptions, ensuring that security constraints are honored throughout the service lifecycle.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>QoS Monitoring</h3>
+                <p>Includes mechanisms for monitoring and enforcing Quality of Service (QoS) attributes such as performance, reliability, and availability.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Standards Compliance</h3>
+                <p>Maintains compatibility with existing web service standards while extending functionality through well-defined extensions and profiles.</p>
+            </div>
+        </section>
+        
+        <section id="implementation" class="info-section">
+            <h2>Implementing WSDLS Approach</h2>
+            <p>Implementing the WSDLS approach involves several key steps that extend beyond traditional WSDL implementation:</p>
+            
+            <h3>1. Service Description Enhancement</h3>
+            <p>Start with a standard WSDL document and enhance it with semantic annotations using technologies like SAWSDL (Semantic Annotations for WSDL) or OWL-S wrappers.</p>
+            <div class="code-block">
+                <pre>&lt;wsdl:interface name="StockQuoteInterface"
+                wsawsdl:modelReference="http://example.org/stockquote/concept"&gt;
+    &lt;wsdl:operation name="GetLastTradePrice"
+                   wsawsdl:modelReference="http://example.org/stockquote/purchase"&gt;
+        &lt;wsdl:input element="tns:GetLastTradePriceInput"/&gt;
+        &lt;wsdl:output element="tns:GetLastTradePriceOutput"/&gt;
+    &lt;/wsdl:operation&gt;
+&lt;/wsdl:interface&gt;</pre>
+            </div>
+            
+            <h3>2. Quality of Service Definition</h3>
+            <p>Define QoS parameters using WS-Policy extensions or custom policy frameworks:</p>
+            <div class="code-block">
+                <pre>&lt;wsp:Policy wsu:Id="SecureConnectionPolicy"&gt;
+    &lt;wsp:ExactlyOne&gt;
+        &lt;wsp:All&gt;
+            &lt;sp:TransportBinding&gt;
+                &lt;wsp:Policy&gt;
+                    &lt;sp:TransportToken&gt;
+                        &lt;wsp:Policy&gt;
+                            &lt;sp:HttpsToken RequireClientCertificate="false"/&gt;
+                        &lt;/wsp:Policy&gt;
+                    &lt;/sp:TransportToken&gt;
+                &lt;/wsp:Policy&gt;
+            &lt;/sp:TransportBinding&gt;
+            &lt;sp:Wss10/&gt;
+            &lt;sp:SignedSupportingTokens&gt;
+                &lt;wsp:Policy&gt;
+                    &lt;sp:UsernameToken sp:IncludeToken="...AlwaysToRecipient"&gt;
+                        &lt;wsp:Policy&gt;
+                            &lt;sp:WssUsernameToken10/&gt;
+                        &lt;/wsp:Policy&gt;
+                    &lt;/sp:UsernameToken&gt;
+                &lt;/wsp:Policy&gt;
+            &lt;/sp:SignedSupportingTokens&gt;
+        &lt;/wsp:All&gt;
+    &lt;/wsp:ExactlyOne&gt;
+&lt;/wsp:Policy&gt;</pre>
+            </div>
+            
+            <h3>3. Service Registry Integration</h3>
+            <p>Publish enhanced service descriptions to a semantically-enabled service registry such as UDDI with WSDLS extensions or a dedicated semantic service registry.</p>
+            
+            <h3>4. Client-Side Integration</h3>
+            <p>Develop clients that can interpret and utilize the enhanced WSDLS descriptions:</p>
+            <div class="code-block">
+                <pre>// JavaScript example of a WSDLS-aware client
+async function discoverAndInvokeService(requirement) {
+    // Discover service based on semantic requirement
+    const serviceEndpoint = await WSDLSRegistry.discover({
+        functionality: requirement.function,
+        qosRequirements: {
+            responseTime: "< 200ms",
+            availability: "> 99.9%"
+        }
+    });
+    
+    // Create dynamic client
+    const client = new WSDLSClient(serviceEndpoint);
+    
+    // Invoke service with runtime binding
+    const result = await client.invoke(requirement.operation, requirement.data);
+    
+    return result;
+}</pre>
+            </div>
+        </section>
+        
+        <section id="examples" class="info-section">
+            <h2>WSDLS Implementation Examples</h2>
+            
+            <h3>Example 1: Financial Service Integration</h3>
+            <p>A financial institution implemented WSDLS to expose and integrate payment processing services across multiple channels. The enhanced service descriptions enabled:</p>
+            <ul>
+                <li>Dynamic discovery of appropriate payment processors based on transaction type, amount, and currency</li>
+                <li>Automatic failover to alternative providers when performance degraded</li>
+                <li>Seamless versioning and migration of service endpoints without client disruption</li>
+            </ul>
+            
+            <h3>Example 2: Healthcare Data Exchange</h3>
+            <p>A healthcare network used WSDLS to facilitate secure patient data exchange between disparate systems:</p>
+            <ul>
+                <li>Semantic annotations ensured correct interpretation of medical terms and codes</li>
+                <li>Security policies enforced HIPAA compliance at the service description level</li>
+                <li>QoS monitoring ensured timely delivery of critical patient information</li>
+            </ul>
+            
+            <h3>Example 3: Smart City Infrastructure</h3>
+            <p>A smart city initiative leveraged WSDLS for integrating various municipal services:</p>
+            <ul>
+                <li>Dynamic discovery and composition of traffic management, public transportation, and emergency services</li>
+                <li>Context-aware service adaptation based on time of day, weather conditions, and special events</li>
+                <li>Standardized interface for third-party service providers to integrate with the city platform</li>
+            </ul>
+        </section>
+        
+        <section id="resources" class="info-section">
+            <h2>Resources and Tools</h2>
+            
+            <h3>Development Frameworks</h3>
+            <ul>
+                <li><strong>Apache CXF</strong> - Supports WSDLS extensions through custom annotations</li>
+                <li><strong>METEOR-S</strong> - Framework for semantic web services based on WSDL-S</li>
+                <li><strong>OWL-S API</strong> - Tools for creating and manipulating OWL-S service descriptions</li>
+            </ul>
+            
+            <h3>Service Registries</h3>
+            <ul>
+                <li><strong>jUDDI with WSDLS Extensions</strong> - UDDI registry with semantic extensions</li>
+                <li><strong>iServe</strong> - Semantic service registry based on Linked Data principles</li>
+                <li><strong>FUSION Semantic Registry</strong> - Publication and discovery of semantic web services</li>
+            </ul>
+            
+            <h3>Documentation and Specifications</h3>
+            <ul>
+                <li><a href="#" style="color: var(--primary-color);">WSDLS Approach Specification</a></li>
+                <li><a href="#" style="color: var(--primary-color);">Web Services Description Language (WSDL) 2.0</a></li>
+                <li><a href="#" style="color: var(--primary-color);">Semantic Annotations for WSDL (SAWSDL)</a></li>
+                <li><a href="#" style="color: var(--primary-color);">Web Service Modeling Ontology (WSMO)</a></li>
+            </ul>
+        </section>
+        
+        <section class="timeline">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Evolution of Web Service Technologies</h2>
+            
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>1999-2001: XML-RPC & Early SOAP</h3>
+                    <p>Initial standards for remote procedure calls using XML emerged.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>2001-2003: WSDL 1.1 & UDDI</h3>
+                    <p>First standardized service description language and discovery mechanisms.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>2004-2006: WS-* Standards</h3>
+                    <p>Development of various web service extensions for security, reliability, and transactions.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>2006-2008: WSDL 2.0 & REST</h3>
+                    <p>Refinement of WSDL and growing popularity of REST architectural style.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>2008-2010: Semantic Web Services</h3>
+                    <p>Introduction of semantic annotations and ontology-based service descriptions.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>2010-2015: Cloud Services & API Economy</h3>
+                    <p>Shift towards lightweight APIs and cloud-based service delivery models.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>2016-2020: Microservices & Containers</h3>
+                    <p>Decomposition of monolithic services into smaller, containerized microservices.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>2020-Present: WSDLS Approach</h3>
+                    <p>Integration of semantic technologies with traditional web service standards for enhanced capabilities.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#overview">Overview</a>
+                <a href="#features">Features</a>
+                <a href="#implementation">Implementation</a>
+                <a href="#examples">Examples</a>
+                <a href="#resources">Resources</a>
+            </div>
+            <p>&copy; 2025 WSDLS Approach Documentation</p>
+        </div>
+    </footer>
+    
+    <div class="back-to-top">↑</div>
+    
+    <script>
+        $(document).ready(function() {
+            // Mobile menu toggle
+            $('.mobile-menu-btn').click(function() {
+                $('.nav-links').addClass('active');
+            });
+            
+            $('.mobile-menu-close').click(function() {
+                $('.nav-links').removeClass('active');
+            });
+            
+            // Smooth scrolling for navigation links
+            $('a[href^="#"]').click(function(e) {
+                e.preventDefault();
+                
+                var target = $(this.hash);
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 70
+                    }, 800);
+                }
+                
+                // Close mobile menu if open
+                $('.nav-links').removeClass('active');
+            });
+            
+            // Back to top button
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 300) {
+                    $('.back-to-top').addClass('visible');
+                } else {
+                    $('.back-to-top').removeClass('visible');
+                }
+            });
+            
+            $('.back-to-top').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 800);
+            });
+            
+            // Feature card animation on scroll
+            $(window).scroll(function() {
+                $('.feature-card').each(function() {
+                    var elementTop = $(this).offset().top;
+                    var elementVisible = 150;
+                    var windowHeight = $(window).height();
+                    var scrollTop = $(window).scrollTop();
+                    
+                    if (elementTop < (windowHeight + scrollTop) - elementVisible) {
+                        $(this).addClass('animated');
+                    }
+                });
+            });
+            
+            // Code highlighting effect
+            $('.code-block').hover(
+                function() {
+                    $(this).css('transform', 'scale(1.02)');
+                    $(this).css('box-shadow', '0 6px 15px rgba(0,0,0,0.15)');
+                },
+                function() {
+                    $(this).css('transform', 'scale(1)');
+                    $(this).css('box-shadow', '0 4px 10px rgba(0,0,0,0.1)');
+                }
+            );
+            
+            // Responsive adjustments
+            function checkScreenSize() {
+                if ($(window).width() <= 768) {
+                    // Mobile adjustments
+                } else {
+                    // Desktop adjustments
+                    $('.nav-links').removeClass('active');
+                }
+            }
+            
+            // Run on load and resize
+            checkScreenSize();
+            $(window).resize(checkScreenSize);
+        });
+    </script>
+</body>
+</html>
